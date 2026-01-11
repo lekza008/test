@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>Play Zone </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Segoe UI", sans-serif;
+    }
+    .app {
+      width: 100%;
+      max-width: 420px;
+      height: 650px;
+      background: white;
+      border-radius: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .header {
+      background: #ff5f7e;
+      color: white;
+      padding: 14px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .tabs {
+      display: flex;
+      background: #fff0f4;
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .tab.active {
+      background: #ff5f7e;
+      color: white;
+      font-weight: bold;
+    }
+    .content {
+      flex: 1;
+      padding: 14px;
+      overflow-y: auto;
+    }
+
+    /* Chat */
+    .msg { margin-bottom: 10px; padding: 10px 14px; border-radius: 16px; max-width: 75%; font-size: 14px; }
+    .me { background: #ff5f7e; color: white; margin-left: auto; }
+    .lover { background: #ffe4ea; }
+    .input-box { display: flex; gap: 6px; }
+    .input-box input { flex: 1; border-radius: 20px; border: 1px solid #f3c2cc; padding: 10px; }
+    .input-box button { border: none; border-radius: 50%; width: 42px; height: 42px; background: #ff5f7e; color: white; }
+
+    /* Game */
+    .game-btn { display: block; width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 16px; border: none; background: #ff5f7e; color: white; font-size: 15px; }
+    .card { padding: 14px; background: #fff5f7; border-radius: 16px; text-align: center; }
+
+    /* Fortune */
+    .fortune { font-size: 20px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="header">Play Zone</div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('chat')">แชท</div>
+    <div class="tab" onclick="showTab('game')">เกม</div>
+    <div class="tab" onclick="showTab('fortune')">ทำนาย</div>
+  </div>
+
+  <div class="content" id="chat">
+    <div id="messages">
+      <div class="msg lover">ชั้นอยู่ตรงนี้นะ 🥰</div>
+    </div>
+    <div class="input-box">
+      <input id="text" placeholder="พิมพ์ข้อความ…" />
+      <button onclick="sendMsg()">➤</button>
+    </div>
+  </div>
+
+  <div class="content" id="game" style="display:none">
+    <button class="game-btn" onclick="loveQuiz()">เกมทายใจ</button>
+    <button class="game-btn" onclick="randomMission()">🎯ภารกิจ</button>
+    <div class="card" id="gameResult">กดปุ่มเพื่อเล่นเกม </div>
+  </div>
+
+  <div class="content" id="fortune" style="display:none">
+    <button class="game-btn" onclick="loveFortune()">🔮 ดูดวงความรักวันนี้</button>
+    <div class="card fortune" id="fortuneText">วันนี้ความรักจะเป็นยังไงนะ 💭</div>
+  </div>
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const contents = ['chat','game','fortune'];
+
+  function showTab(name) {
+    tabs.forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    contents.forEach(c => document.getElementById(c).style.display = 'none');
+    document.getElementById(name).style.display = 'block';
+  }
+
+  // Chat
+  const messages = document.getElementById('messages');
+  const input = document.getElementById('text');
+  function addMessage(text, cls) {
+    const div = document.createElement('div');
+    div.className = 'msg ' + cls;
+    div.textContent = text;
+    messages.appendChild(div);
+  }
+  function sendMsg() {
+    if (!input.value) return;
+    addMessage(input.value, 'me');
+    setTimeout(() => addMessage('ยิ้มเลย 😊', 'lover'), 700);
+    input.value='';
+  }
+
+  // Games
+  function loveQuiz() {
+    const qs = ['แฟนคิดถึงคุณแค่ไหน?', 'ถ้าทะเลาะกัน ใครง้อก่อน?', 'คุณหวงชั้นระดับไหน?'];
+    document.getElementById('gameResult').textContent = qs[Math.floor(Math.random()*qs.length)] + ' ❤️';
+  }
+  function randomMission() {
+    const ms = ['บอกรักเล็กเดี๋ยวนี้', 'ส่งสติ๊กเกอร์หวาน ๆ', 'ชมเล็ก 1 อย่าง'];
+    document.getElementById('gameResult').textContent = 'ภารกิจ: ' + ms[Math.floor(Math.random()*ms.length)];
+  }
+
+  // Fortune
+  function loveFortune() {
+    const fs = ['วันนี้หวานเป็นพิเศษ 💕', 'คิดถึงคุณทั้งวัน 😘', 'แค่ได้คุยก็มีความสุข 😊'];
+    document.getElementById('fortuneText').textContent = fs[Math.floor(Math.random()*fs.length)];
+  }
+</script>
+</body>
+</html>
